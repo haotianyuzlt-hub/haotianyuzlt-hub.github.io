@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>皓天宇 — 个人主页</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@300;400;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0d1a;
+    --bg-card: rgba(255,255,255,0.03);
+    --bg-card-hover: rgba(255,255,255,0.06);
+    --coral: #ff6b6b;
+    --coral-glow: rgba(255,107,107,0.3);
+    --cyan: #4ecdc4;
+    --cyan-glow: rgba(78,205,196,0.3);
+    --yellow: #ffd93d;
+    --yellow-glow: rgba(255,217,61,0.3);
+    --green: #6cff6c;
+    --purple: #a78bfa;
+    --text: #e8e8f0;
+    --text-muted: #8888aa;
+    --border: rgba(255,255,255,0.08);
+    --radius: 16px;
+    --font-display: 'Fredoka', sans-serif;
+    --font-body: 'Nunito', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    cursor: none;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Dot grid background ── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background-image: radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+
+  /* ── Floating shapes ── */
+  .floating-shapes { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+  .shape {
+    position: absolute; border-radius: 50%; filter: blur(60px); opacity: 0.12;
+    animation: floatShape 20s infinite ease-in-out;
+  }
+  .shape:nth-child(1) { width: 400px; height: 400px; background: var(--coral); top: -100px; left: -100px; animation-delay: 0s; }
+  .shape:nth-child(2) { width: 350px; height: 350px; background: var(--cyan); top: 40%; right: -120px; animation-delay: -7s; }
+  .shape:nth-child(3) { width: 300px; height: 300px; background: var(--purple); bottom: -80px; left: 30%; animation-delay: -13s; }
+  .shape:nth-child(4) { width: 250px; height: 250px; background: var(--yellow); top: 60%; left: -80px; animation-delay: -5s; animation-duration: 25s; }
+
+  @keyframes floatShape {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    25% { transform: translate(60px, -40px) scale(1.15); }
+    50% { transform: translate(-30px, 50px) scale(0.9); }
+    75% { transform: translate(-50px, -30px) scale(1.1); }
+  }
+
+  /* ── Custom cursor ── */
+  .cursor { position: fixed; z-index: 9999; pointer-events: none; width: 20px; height: 20px; border: 2px solid var(--coral); border-radius: 50%; transform: translate(-50%, -50%); transition: width 0.25s, height 0.25s, border-color 0.25s, background 0.25s; mix-blend-mode: difference; }
+  .cursor.hover { width: 50px; height: 50px; background: rgba(255,107,107,0.15); border-color: var(--yellow); }
+  .cursor-dot { position: fixed; z-index: 9999; pointer-events: none; width: 6px; height: 6px; background: var(--coral); border-radius: 50%; transform: translate(-50%, -50%); mix-blend-mode: difference; }
+
+  /* ── Navigation ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 1.2rem 2rem;
+    display: flex; align-items: center; justify-content: space-between;
+    backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    background: rgba(13,13,26,0.7);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo { font-family: var(--font-display); font-size: 1.5rem; font-weight: 700; color: var(--coral); letter-spacing: -0.5px; }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a { color: var(--text-muted); text-decoration: none; font-weight: 600; font-size: 0.9rem; transition: color 0.3s; letter-spacing: 0.5px; }
+  .nav-links a:hover { color: var(--coral); }
+
+  /* ── Sections ── */
+  section { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; padding: 6rem 2rem; }
+
+  .section-label {
+    font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase;
+    letter-spacing: 3px; color: var(--cyan); margin-bottom: 0.75rem;
+  }
+  .section-title {
+    font-family: var(--font-display); font-size: 2.8rem; font-weight: 700;
+    line-height: 1.15; margin-bottom: 3rem; letter-spacing: -1px;
+  }
+  .section-title .hl { background: linear-gradient(135deg, var(--coral), var(--yellow)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+
+  /* ── Hero ── */
+  .hero {
+    min-height: 100vh; display: flex; align-items: center; padding-top: 5rem;
+    position: relative; z-index: 1;
+  }
+  .hero-content { max-width: 700px; }
+  .hero-greeting { font-family: var(--font-mono); font-size: 0.85rem; color: var(--cyan); letter-spacing: 2px; margin-bottom: 1rem; }
+  .hero-name { font-family: var(--font-display); font-size: clamp(3.5rem, 8vw, 6rem); font-weight: 700; line-height: 1.05; letter-spacing: -2px; margin-bottom: 0.5rem; }
+  .hero-name .gradient-text {
+    background: linear-gradient(135deg, var(--coral) 0%, var(--yellow) 50%, var(--cyan) 100%);
+    background-size: 200% 200%;
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    animation: gradientShift 4s ease-in-out infinite;
+  }
+  @keyframes gradientShift { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+
+  .hero-role { font-size: 1.4rem; color: var(--text-muted); font-weight: 400; margin-bottom: 1.5rem; }
+  .hero-role .typewriter { color: var(--yellow); font-weight: 700; }
+  .hero-role .typewriter::after { content: '|'; animation: blink 1s step-end infinite; color: var(--coral); }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  .hero-desc { font-size: 1.1rem; color: var(--text-muted); max-width: 500px; margin-bottom: 2.5rem; line-height: 1.8; }
+  .hero-cta { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    padding: 0.85rem 1.8rem; border-radius: 50px;
+    font-family: var(--font-display); font-size: 1rem; font-weight: 600;
+    text-decoration: none; border: none; cursor: none;
+    transition: transform 0.3s, box-shadow 0.3s;
+    position: relative; overflow: hidden;
+  }
+  .btn-primary { background: var(--coral); color: #fff; box-shadow: 0 4px 25px var(--coral-glow); }
+  .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 8px 35px var(--coral-glow); }
+  .btn-outline { background: transparent; color: var(--text); border: 2px solid var(--border); }
+  .btn-outline:hover { border-color: var(--cyan); color: var(--cyan); transform: translateY(-3px); box-shadow: 0 8px 30px var(--cyan-glow); }
+
+  /* ── Hero avatar ── */
+  .hero-visual { position: absolute; right: -60px; top: 50%; transform: translateY(-50%); pointer-events: none; }
+  .avatar-ring { width: 280px; height: 280px; border-radius: 50%; position: relative; }
+  .avatar-ring::before {
+    content: ''; position: absolute; inset: -8px; border-radius: 50%;
+    background: conic-gradient(var(--coral), var(--yellow), var(--cyan), var(--purple), var(--coral));
+    animation: spin 8s linear infinite;
+  }
+  .avatar-ring::after {
+    content: ''; position: absolute; inset: 4px; border-radius: 50%; background: var(--bg);
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .avatar-img {
+    position: absolute; inset: 12px; border-radius: 50%; z-index: 2;
+    width: calc(100% - 24px); height: calc(100% - 24px);
+    object-fit: cover; object-position: center top;
+  }
+
+  /* ── About ── */
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; }
+  .about-text { font-size: 1.05rem; color: var(--text-muted); line-height: 1.9; }
+  .about-text strong { color: var(--text); }
+  .info-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1.5rem; }
+  .info-card {
+    background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 1.2rem; transition: transform 0.3s, border-color 0.3s;
+  }
+  .info-card:hover { transform: translateY(-4px); border-color: var(--coral); }
+  .info-card .card-icon { font-size: 1.5rem; margin-bottom: 0.4rem; display: block; }
+  .info-card .card-label { font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+  .info-card .card-value { font-family: var(--font-display); font-size: 1.1rem; color: var(--text); margin-top: 0.2rem; }
+  .about-story {
+    background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 2rem; margin-top: 1.5rem; position: relative;
+  }
+  .about-story::before { content: '💬'; position: absolute; top: -15px; left: 20px; font-size: 1.5rem; }
+  .about-story p { color: var(--text-muted); font-size: 0.95rem; line-height: 1.9; }
+  .about-story strong { color: var(--text); }
+
+  /* ── Hobbies ── */
+  .hobbies-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+  .hobby-category { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 2rem; transition: border-color 0.3s, transform 0.3s; }
+  .hobby-category:hover { border-color: rgba(255,255,255,0.2); transform: translateY(-4px); }
+  .hobby-category .cat-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem; }
+  .hobby-category .cat-icon { font-size: 2rem; }
+  .hobby-category .cat-title { font-family: var(--font-display); font-size: 1.4rem; }
+  .platform-list { display: flex; flex-direction: column; gap: 1rem; }
+  .platform-card {
+    background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 12px;
+    padding: 1rem 1.2rem; transition: all 0.3s;
+  }
+  .platform-card:hover { border-color: var(--cyan); background: rgba(78,205,196,0.05); }
+  .platform-card .pf-name { font-family: var(--font-display); font-size: 1rem; margin-bottom: 0.3rem; display: flex; align-items: center; gap: 0.5rem; }
+  .platform-card .pf-games { font-size: 0.85rem; color: var(--text-muted); }
+  .platform-badge {
+    display: inline-block; font-family: var(--font-mono); font-size: 0.65rem;
+    padding: 0.15rem 0.6rem; border-radius: 50px;
+  }
+  .badge-steam { background: rgba(27,40,56,0.6); color: #66c0f4; }
+  .badge-wegame { background: rgba(250,100,0,0.1); color: #fa6400; }
+  .badge-blizzard { background: rgba(0,150,255,0.1); color: #0096ff; }
+  .offline-tags { display: flex; flex-wrap: wrap; gap: 0.8rem; }
+  .offline-tag {
+    padding: 0.8rem 1.4rem; border-radius: 50px;
+    font-family: var(--font-display); font-size: 1rem;
+    border: 1.5px solid var(--border); background: var(--bg-card);
+    color: var(--text); transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .offline-tag:hover {
+    transform: scale(1.1); border-color: var(--coral);
+    box-shadow: 0 0 25px var(--coral-glow); color: var(--coral);
+  }
+  .offline-tag:nth-child(even):hover { border-color: var(--yellow); box-shadow: 0 0 25px var(--yellow-glow); color: var(--yellow); }
+
+  /* ── Photo Gallery ── */
+  .gallery-section { max-width: 100vw; padding: 6rem 0; }
+  .gallery-section .section-label, .gallery-section .section-title { max-width: 1100px; margin-left: auto; margin-right: auto; padding: 0 2rem; }
+  .gallery-wrapper { position: relative; margin-top: 2rem; }
+  .gallery-track {
+    display: flex; gap: 1.5rem; overflow-x: auto; scroll-snap-type: x mandatory;
+    padding: 1rem 2rem 2rem; scroll-behavior: smooth;
+    scrollbar-width: none; -ms-overflow-style: none;
+    cursor: grab;
+  }
+  .gallery-track::-webkit-scrollbar { display: none; }
+  .gallery-track.dragging { cursor: grabbing; scroll-behavior: auto; }
+  .gallery-item {
+    flex: 0 0 auto; scroll-snap-align: start;
+    border-radius: 20px; overflow: hidden;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+  }
+  .gallery-item:nth-child(odd) { transform: rotate(-1deg); }
+  .gallery-item:nth-child(even) { transform: rotate(1.5deg); }
+  .gallery-item:nth-child(3n) { transform: rotate(-0.5deg); }
+  .gallery-item:hover { transform: rotate(0deg) scale(1.03) !important; z-index: 5; box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
+  .gallery-item img {
+    width: 300px; height: 400px; object-fit: cover; display: block;
+    border-radius: 20px; border: 1px solid var(--border);
+  }
+  .gallery-nav { display: flex; justify-content: center; gap: 1rem; margin-top: 1.5rem; }
+  .gallery-nav button {
+    width: 50px; height: 50px; border-radius: 50%; border: 1.5px solid var(--border);
+    background: var(--bg-card); color: var(--text); font-size: 1.3rem;
+    cursor: none; transition: all 0.3s;
+  }
+  .gallery-nav button:hover { border-color: var(--coral); background: var(--coral-glow); color: var(--coral); }
+
+  /* ── Contact ── */
+  .contact-wrapper { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; }
+  .contact-info h3 { font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 1rem; }
+  .contact-info p { color: var(--text-muted); margin-bottom: 1.5rem; }
+  .contact-links { display: flex; flex-direction: column; gap: 0.8rem; }
+  .contact-link {
+    display: flex; align-items: center; gap: 0.8rem; color: var(--text-muted); text-decoration: none;
+    font-weight: 600; transition: color 0.3s; padding: 0.5rem 0; font-size: 0.95rem;
+  }
+  .contact-link:hover { color: var(--coral); }
+  .contact-link .icon-circle {
+    width: 42px; height: 42px; border-radius: 50%; background: var(--bg-card);
+    border: 1px solid var(--border); display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem; transition: all 0.3s; flex-shrink: 0;
+  }
+  .contact-link:hover .icon-circle { border-color: var(--coral); background: var(--coral-glow); }
+  .contact-form { display: flex; flex-direction: column; gap: 1rem; }
+  .input-group input, .input-group textarea {
+    width: 100%; padding: 1rem 1.2rem; background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: 12px; color: var(--text); font-family: var(--font-body); font-size: 0.95rem;
+    transition: border-color 0.3s, box-shadow 0.3s; resize: vertical; outline: none;
+  }
+  .input-group input:focus, .input-group textarea:focus { border-color: var(--coral); box-shadow: 0 0 20px var(--coral-glow); }
+  .input-group textarea { min-height: 120px; }
+  .submit-btn {
+    align-self: flex-start; padding: 0.9rem 2.5rem; background: var(--coral); color: #fff;
+    border: none; border-radius: 50px; font-family: var(--font-display); font-size: 1rem; font-weight: 600;
+    cursor: none; transition: all 0.3s; position: relative; overflow: hidden;
+  }
+  .submit-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 35px var(--coral-glow); }
+  .submit-btn.sent { background: var(--green); pointer-events: none; }
+
+  /* ── Footer ── */
+  footer { text-align: center; padding: 3rem 2rem; color: var(--text-muted); font-size: 0.85rem; border-top: 1px solid var(--border); position: relative; z-index: 1; }
+  footer .heart { color: var(--coral); animation: heartbeat 1.5s ease-in-out infinite; display: inline-block; }
+  @keyframes heartbeat { 0%, 100% { transform: scale(1); } 14% { transform: scale(1.3); } 28% { transform: scale(1); } 42% { transform: scale(1.3); } 70% { transform: scale(1); } }
+
+  /* ── Reveal animations ── */
+  .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+
+  /* ── Responsive ── */
+  @media (max-width: 768px) {
+    .hero-visual { display: none; }
+    .about-grid, .hobbies-grid, .contact-wrapper { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+    .section-title { font-size: 2rem; }
+    .hero-name { font-size: 2.8rem; }
+    .cursor, .cursor-dot { display: none; }
+    body { cursor: auto; }
+    .gallery-item img { width: 220px; height: 300px; }
+  }
+
+  @media (max-width: 480px) {
+    section { padding: 4rem 1.2rem; }
+    .info-cards { grid-template-columns: 1fr; }
+    .gallery-item img { width: 180px; height: 260px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Floating background shapes -->
+<div class="floating-shapes">
+  <div class="shape"></div><div class="shape"></div><div class="shape"></div><div class="shape"></div>
+</div>
+
+<!-- Custom cursor -->
+<div class="cursor"></div>
+<div class="cursor-dot"></div>
+
+<!-- Navigation -->
+<nav>
+  <div class="nav-logo">haotianyu.me</div>
+  <ul class="nav-links">
+    <li><a href="#about">关于</a></li>
+    <li><a href="#hobbies">爱好</a></li>
+    <li><a href="#gallery">相册</a></li>
+    <li><a href="#contact">联系</a></li>
+  </ul>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-content">
+    <p class="hero-greeting reveal">👋 你好，我是</p>
+    <h1 class="hero-name reveal reveal-delay-1">
+      <span class="gradient-text">皓天宇</span>
+    </h1>
+    <p class="hero-role reveal reveal-delay-2">
+      <span class="typewriter" id="typewriter"></span>
+    </p>
+    <p class="hero-desc reveal reveal-delay-3">
+      02年天蝎座男生，坐标杭州。医学信息工程毕业，gap期把生活玩成了RPG ——
+      快递、外卖、销售、保险、运营、实施工程师，每个都是支线任务。
+    </p>
+    <div class="hero-cta reveal reveal-delay-4">
+      <a href="#hobbies" class="btn btn-primary">🎮 我的爱好</a>
+      <a href="#contact" class="btn btn-outline">💬 交个朋友</a>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="avatar-ring">
+      <img class="avatar-img" src="avatar.jpg" alt="皓天宇">
+    </div>
+  </div>
+</section>
+
+<!-- About -->
+<section id="about">
+  <p class="section-label reveal">01 / About</p>
+  <h2 class="section-title reveal reveal-delay-1">关于<span class="hl">我</span></h2>
+  <div class="about-grid">
+    <div class="reveal reveal-delay-2">
+      <div class="about-text">
+        <p>我是<strong>郑凌涛</strong>，网名<strong>皓天宇</strong>，02年天蝎座，坐标<strong>浙江杭州</strong>。</p>
+      </div>
+      <div class="info-cards">
+        <div class="info-card">
+          <span class="card-icon">🎓</span>
+          <span class="card-label">教育背景</span>
+          <span class="card-value">杭州医学院</span>
+          <span style="font-size:0.8rem;color:var(--text-muted);display:block;">医学信息工程 · 2021-2025</span>
+        </div>
+        <div class="info-card">
+          <span class="card-icon">📍</span>
+          <span class="card-label">所在城市</span>
+          <span class="card-value">浙江杭州</span>
+        </div>
+        <div class="info-card">
+          <span class="card-icon">🎂</span>
+          <span class="card-label">星座</span>
+          <span class="card-value">天蝎座 ♏</span>
+        </div>
+        <div class="info-card">
+          <span class="card-icon">🎯</span>
+          <span class="card-label">状态</span>
+          <span class="card-value">探索人生中</span>
+        </div>
+      </div>
+    </div>
+    <div class="reveal reveal-delay-3">
+      <div class="about-story">
+        <p>
+          我是02年的天蝎座男生，来自浙江杭州，25年毕业于杭州医学院的医学信息工程。毕业后我经历了一段漫长的<strong>gap期</strong>，期间干过快递员、外卖员、销售、卖保险、运营、实施工程师。
+        </p>
+        <p style="margin-top:1rem;">
+          大学期间我担任过<strong>班长</strong>，也就是班主任的小帮手、同学们的小混蛋。但我这个人比较面向同学，所以和班主任的关系就没有很好 😅
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Hobbies -->
+<section id="hobbies">
+  <p class="section-label reveal">02 / Hobbies</p>
+  <h2 class="section-title reveal reveal-delay-1">我的<span class="hl">爱好</span></h2>
+  <div class="hobbies-grid">
+    <!-- Online -->
+    <div class="hobby-category reveal reveal-delay-2">
+      <div class="cat-header">
+        <span class="cat-icon">🎮</span>
+        <span class="cat-title">线上游戏</span>
+      </div>
+      <div class="platform-list">
+        <div class="platform-card">
+          <div class="pf-name">🔵 Steam <span class="platform-badge badge-steam">STEAM</span></div>
+          <div class="pf-games">饥荒 · APEX · 星露谷物语</div>
+        </div>
+        <div class="platform-card">
+          <div class="pf-name">🟠 WeGame <span class="platform-badge badge-wegame">WEGAME</span></div>
+          <div class="pf-games">云顶之弈 · LOL · 三角洲行动 · 无畏契约</div>
+        </div>
+        <div class="platform-card">
+          <div class="pf-name">🔷 暴雪战网 <span class="platform-badge badge-blizzard">BATTLE.NET</span></div>
+          <div class="pf-games">守望先锋 · 炉石传说</div>
+        </div>
+      </div>
+    </div>
+    <!-- Offline -->
+    <div class="hobby-category reveal reveal-delay-3">
+      <div class="cat-header">
+        <span class="cat-icon">🎉</span>
+        <span class="cat-title">线下活动</span>
+      </div>
+      <div class="offline-tags">
+        <span class="offline-tag">🎤 KTV</span>
+        <span class="offline-tag">🀄 麻将</span>
+        <span class="offline-tag">🎲 桌游</span>
+        <span class="offline-tag">🏙️ City Walk</span>
+        <span class="offline-tag">🎪 轰趴</span>
+        <span class="offline-tag">🍲 美食探店</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Gallery -->
+<section id="gallery" class="gallery-section">
+  <p class="section-label reveal">03 / Gallery</p>
+  <h2 class="section-title reveal reveal-delay-1">生活<span class="hl">相册</span></h2>
+  <div class="gallery-wrapper reveal reveal-delay-2">
+    <div class="gallery-track" id="galleryTrack">
+      <div class="gallery-item"><img src="gallery/微信图片_20260427111455_61_2.jpg" alt="photo"></div>
+      <div class="gallery-item"><img src="gallery/微信图片_20260429135522_67_2.jpg" alt="photo"></div>
+      <div class="gallery-item"><img src="gallery/微信图片_20260429135524_68_2.jpg" alt="photo"></div>
+      <div class="gallery-item"><img src="gallery/微信图片_20260429135527_69_2.jpg" alt="photo"></div>
+      <div class="gallery-item"><img src="gallery/微信图片_20260429135910_70_2.jpg" alt="photo"></div>
+      <div class="gallery-item"><img src="gallery/微信图片_20260429135933_71_2.jpg" alt="photo"></div>
+      <div class="gallery-item"><img src="gallery/微信图片_20260429135941_73_2.jpg" alt="photo"></div>
+      <div class="gallery-item"><img src="gallery/微信图片_20260429135951_74_2.jpg" alt="photo"></div>
+      <div class="gallery-item"><img src="gallery/微信图片_20260429140000_75_2.jpg" alt="photo"></div>
+    </div>
+  </div>
+  <div class="gallery-nav reveal reveal-delay-3">
+    <button id="galleryPrev" aria-label="上一张">←</button>
+    <button id="galleryNext" aria-label="下一张">→</button>
+  </div>
+</section>
+
+<!-- Contact -->
+<section id="contact">
+  <p class="section-label reveal">04 / Contact</p>
+  <h2 class="section-title reveal reveal-delay-1">联系<span class="hl">我</span></h2>
+  <div class="contact-wrapper">
+    <div class="contact-info reveal reveal-delay-2">
+      <h3>来交个朋友吧 👋</h3>
+      <p>无论是约游戏开黑、线下桌游局，还是单纯想聊聊天，都欢迎来戳我！</p>
+      <div class="contact-links">
+        <a href="#" class="contact-link"><span class="icon-circle">💬</span> 微信：hty_1581807173</a>
+        <a href="mailto:haotianyu.zlt@gmail.com" class="contact-link"><span class="icon-circle">📧</span> haotianyu.zlt@gmail.com</a>
+        <a href="#" class="contact-link"><span class="icon-circle">📞</span> 电话：137773802767</a>
+      </div>
+    </div>
+    <form class="contact-form reveal reveal-delay-3" id="contactForm">
+      <div class="input-group"><input type="text" placeholder="你的名字" required></div>
+      <div class="input-group"><input type="email" placeholder="你的邮箱" required></div>
+      <div class="input-group"><textarea placeholder="说点什么吧..." required></textarea></div>
+      <button type="submit" class="submit-btn" id="submitBtn">📨 发送消息</button>
+    </form>
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 皓天宇 — Made with <span class="heart">❤</span> and lots of games</p>
+</footer>
+
+<script>
+// ── Custom cursor ──
+const cursor = document.querySelector('.cursor');
+const cursorDot = document.querySelector('.cursor-dot');
+let mouseX = 0, mouseY = 0;
+let cursorX = 0, cursorY = 0;
+
+document.addEventListener('mousemove', e => {
+  mouseX = e.clientX;
+  mouseY = e.clientY;
+  cursorDot.style.left = mouseX + 'px';
+  cursorDot.style.top = mouseY + 'px';
+});
+
+function animateCursor() {
+  cursorX += (mouseX - cursorX) * 0.15;
+  cursorY += (mouseY - cursorY) * 0.15;
+  cursor.style.left = cursorX + 'px';
+  cursor.style.top = cursorY + 'px';
+  requestAnimationFrame(animateCursor);
+}
+animateCursor();
+
+// Cursor hover effect on interactive elements
+const hoverTargets = document.querySelectorAll('a, button, .offline-tag, .platform-card, input, textarea, .gallery-item');
+hoverTargets.forEach(el => {
+  el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+  el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+});
+
+// ── Typewriter ──
+const roles = ['天蝎座男生', '游戏爱好者', 'gap期探索者', '前班长 · 同学的小混蛋'];
+let roleIdx = 0, charIdx = 0, isDeleting = false;
+const typewriterEl = document.getElementById('typewriter');
+
+function typeLoop() {
+  const current = roles[roleIdx];
+  if (isDeleting) {
+    typewriterEl.textContent = current.substring(0, charIdx - 1);
+    charIdx--;
+  } else {
+    typewriterEl.textContent = current.substring(0, charIdx + 1);
+    charIdx++;
+  }
+
+  let speed = isDeleting ? 40 : 100;
+  if (!isDeleting && charIdx === current.length) {
+    speed = 2000;
+    isDeleting = true;
+  } else if (isDeleting && charIdx === 0) {
+    isDeleting = false;
+    roleIdx = (roleIdx + 1) % roles.length;
+    speed = 400;
+  }
+  setTimeout(typeLoop, speed);
+}
+typeLoop();
+
+// ── Scroll reveal ──
+const revealEls = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
+
+revealEls.forEach(el => observer.observe(el));
+
+// ── Contact form ──
+document.getElementById('contactForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const btn = document.getElementById('submitBtn');
+  btn.textContent = '✅ 发送成功！';
+  btn.classList.add('sent');
+  setTimeout(() => {
+    btn.textContent = '📨 发送消息';
+    btn.classList.remove('sent');
+    this.reset();
+  }, 3000);
+});
+
+// ── Parallax on hero visual ──
+const heroVisual = document.querySelector('.hero-visual');
+document.addEventListener('mousemove', e => {
+  if (window.innerWidth <= 768) return;
+  const x = (e.clientX / window.innerWidth - 0.5) * 20;
+  const y = (e.clientY / window.innerHeight - 0.5) * 20;
+  if (heroVisual) heroVisual.style.transform = `translateY(-50%) translate(${x}px, ${y}px)`;
+});
+
+// ── Gallery drag-to-scroll ──
+const track = document.getElementById('galleryTrack');
+let isDown = false, startX, scrollLeft;
+
+track.addEventListener('mousedown', e => {
+  isDown = true; track.classList.add('dragging');
+  startX = e.pageX - track.offsetLeft;
+  scrollLeft = track.scrollLeft;
+});
+track.addEventListener('mouseleave', () => { isDown = false; track.classList.remove('dragging'); });
+track.addEventListener('mouseup', () => { isDown = false; track.classList.remove('dragging'); });
+track.addEventListener('mousemove', e => {
+  if (!isDown) return;
+  e.preventDefault();
+  const x = e.pageX - track.offsetLeft;
+  track.scrollLeft = scrollLeft - (x - startX) * 1.5;
+});
+
+// ── Gallery nav buttons ──
+document.getElementById('galleryPrev').addEventListener('click', () => {
+  track.scrollBy({ left: -320, behavior: 'smooth' });
+});
+document.getElementById('galleryNext').addEventListener('click', () => {
+  track.scrollBy({ left: 320, behavior: 'smooth' });
+});
+</script>
+
+</body>
+</html>
