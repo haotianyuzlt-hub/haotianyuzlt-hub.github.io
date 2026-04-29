@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>皓天宇 — 个人主页</title>
+<title data-i18n="site-title">Haotianyu — Personal Site</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@300;400;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -83,10 +83,31 @@
     background: rgba(13,13,26,0.7);
     border-bottom: 1px solid var(--border);
   }
+  .nav-left { display: flex; align-items: center; gap: 1.5rem; }
   .nav-logo { font-family: var(--font-display); font-size: 1.5rem; font-weight: 700; color: var(--coral); letter-spacing: -0.5px; }
   .nav-links { display: flex; gap: 2rem; list-style: none; }
   .nav-links a { color: var(--text-muted); text-decoration: none; font-weight: 600; font-size: 0.9rem; transition: color 0.3s; letter-spacing: 0.5px; }
   .nav-links a:hover { color: var(--coral); }
+
+  /* ── Language switcher ── */
+  .lang-toggle {
+    position: relative; display: flex; align-items: center;
+    background: var(--bg-card); border: 1px solid var(--border); border-radius: 50px;
+    padding: 0.3rem; gap: 0; cursor: none; user-select: none;
+    transition: border-color 0.3s;
+  }
+  .lang-toggle:hover { border-color: var(--cyan); }
+  .lang-option {
+    padding: 0.35rem 0.9rem; border-radius: 50px;
+    font-family: var(--font-display); font-size: 0.8rem; font-weight: 600;
+    color: var(--text-muted); transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative; z-index: 1; letter-spacing: 0.5px;
+  }
+  .lang-option.active {
+    background: var(--cyan); color: var(--bg);
+    box-shadow: 0 2px 15px var(--cyan-glow);
+  }
+  .lang-globe { font-size: 1rem; margin-right: 0.3rem; }
 
   /* ── Sections ── */
   section { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; padding: 6rem 2rem; }
@@ -168,13 +189,6 @@
   .info-card .card-icon { font-size: 1.5rem; margin-bottom: 0.4rem; display: block; }
   .info-card .card-label { font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
   .info-card .card-value { font-family: var(--font-display); font-size: 1.1rem; color: var(--text); margin-top: 0.2rem; }
-  .about-story {
-    background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius);
-    padding: 2rem; margin-top: 1.5rem; position: relative;
-  }
-  .about-story::before { content: '💬'; position: absolute; top: -15px; left: 20px; font-size: 1.5rem; }
-  .about-story p { color: var(--text-muted); font-size: 0.95rem; line-height: 1.9; }
-  .about-story strong { color: var(--text); }
 
   /* ── ENTP Personality Cards ── */
   .entp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
@@ -355,32 +369,38 @@
 
 <!-- Navigation -->
 <nav>
-  <div class="nav-logo">haotianyu.me</div>
+  <div class="nav-left">
+    <div class="nav-logo">haotianyu.me</div>
+    <div class="lang-toggle" id="langToggle" title="Switch language / 切换语言">
+      <span class="lang-globe">🌐</span>
+      <span class="lang-option active" data-lang="en">EN</span>
+      <span class="lang-option" data-lang="zh">中文</span>
+    </div>
+  </div>
   <ul class="nav-links">
-    <li><a href="#about">关于</a></li>
-    <li><a href="#hobbies">爱好</a></li>
-    <li><a href="#gallery">相册</a></li>
-    <li><a href="#contact">联系</a></li>
+    <li><a href="#about" data-i18n="nav-about">About</a></li>
+    <li><a href="#hobbies" data-i18n="nav-hobbies">Hobbies</a></li>
+    <li><a href="#gallery" data-i18n="nav-gallery">Gallery</a></li>
+    <li><a href="#contact" data-i18n="nav-contact">Contact</a></li>
   </ul>
 </nav>
 
 <!-- Hero -->
 <section class="hero">
   <div class="hero-content">
-    <p class="hero-greeting reveal">👋 你好，我是</p>
+    <p class="hero-greeting reveal" data-i18n="hero-greeting">Hey there, I'm</p>
     <h1 class="hero-name reveal reveal-delay-1">
       <span class="gradient-text">皓天宇</span>
     </h1>
     <p class="hero-role reveal reveal-delay-2">
       <span class="typewriter" id="typewriter"></span>
     </p>
-    <p class="hero-desc reveal reveal-delay-3">
-      02年天蝎座男生，坐标杭州。医学信息工程毕业，gap期把生活玩成了RPG ——
-      快递、外卖、销售、保险、运营、实施工程师，每个都是支线任务。
+    <p class="hero-desc reveal reveal-delay-3" data-i18n="hero-desc">
+      Scorpio guy born in '02, based in Hangzhou. Med school grad who turned life into an open-world RPG — courier, delivery, sales, insurance, ops, implementation engineer... every gig was a side quest.
     </p>
     <div class="hero-cta reveal reveal-delay-4">
-      <a href="#hobbies" class="btn btn-primary">🎮 我的爱好</a>
-      <a href="#contact" class="btn btn-outline">💬 交个朋友</a>
+      <a href="#hobbies" class="btn btn-primary" data-i18n="hero-cta1">My Hobbies</a>
+      <a href="#contact" class="btn btn-outline" data-i18n="hero-cta2">Say Hello</a>
     </div>
   </div>
   <div class="hero-visual">
@@ -392,34 +412,34 @@
 
 <!-- About -->
 <section id="about">
-  <p class="section-label reveal">01 / About</p>
-  <h2 class="section-title reveal reveal-delay-1">关于<span class="hl">我</span></h2>
+  <p class="section-label reveal" data-i18n="about-label">01 / About</p>
+  <h2 class="section-title reveal reveal-delay-1"><span data-i18n="about-title">About</span> <span class="hl" data-i18n="about-title-hl">Me</span></h2>
   <div class="about-grid">
     <div class="reveal reveal-delay-2">
       <div class="about-text">
-        <p>我是<strong>郑凌涛</strong>，网名<strong>皓天宇</strong>，02年天蝎座，坐标<strong>浙江杭州</strong>。</p>
+        <p data-i18n="about-intro">I'm <strong>郑凌涛</strong>, aka <strong>皓天宇</strong>, a Scorpio based in <strong>Hangzhou, Zhejiang</strong>.</p>
       </div>
       <div class="info-cards">
         <div class="info-card">
           <span class="card-icon">🎓</span>
-          <span class="card-label">教育背景</span>
+          <span class="card-label" data-i18n="info-edu-label">Education</span>
           <span class="card-value">杭州医学院</span>
-          <span style="font-size:0.8rem;color:var(--text-muted);display:block;">医学信息工程 · 2021-2025</span>
+          <span style="font-size:0.8rem;color:var(--text-muted);display:block;" data-i18n="info-edu-detail">Medical Info Engineering · 2021-2025</span>
         </div>
         <div class="info-card">
           <span class="card-icon">📍</span>
-          <span class="card-label">所在城市</span>
-          <span class="card-value">浙江杭州</span>
+          <span class="card-label" data-i18n="info-city-label">City</span>
+          <span class="card-value" data-i18n="info-city-value">Hangzhou, Zhejiang</span>
         </div>
         <div class="info-card">
           <span class="card-icon">🎂</span>
-          <span class="card-label">星座</span>
-          <span class="card-value">天蝎座 ♏</span>
+          <span class="card-label" data-i18n="info-zodiac-label">Zodiac</span>
+          <span class="card-value" data-i18n="info-zodiac-value">Scorpio</span>
         </div>
         <div class="info-card">
           <span class="card-icon">🎯</span>
-          <span class="card-label">状态</span>
-          <span class="card-value">探索人生中</span>
+          <span class="card-label" data-i18n="info-status-label">Status</span>
+          <span class="card-value" data-i18n="info-status-value">Exploring life</span>
         </div>
       </div>
     </div>
@@ -452,27 +472,27 @@
 
 <!-- Hobbies -->
 <section id="hobbies">
-  <p class="section-label reveal">02 / Hobbies</p>
-  <h2 class="section-title reveal reveal-delay-1">我的<span class="hl">爱好</span></h2>
+  <p class="section-label reveal" data-i18n="hobbies-label">02 / Hobbies</p>
+  <h2 class="section-title reveal reveal-delay-1"><span data-i18n="hobbies-title">My</span> <span class="hl" data-i18n="hobbies-title-hl">Hobbies</span></h2>
   <div class="hobbies-grid">
     <!-- Online -->
     <div class="hobby-category reveal reveal-delay-2">
       <div class="cat-header">
         <span class="cat-icon">🎮</span>
-        <span class="cat-title">线上游戏</span>
+        <span class="cat-title" data-i18n="hobbies-online">Online Games</span>
       </div>
       <div class="platform-list">
         <div class="platform-card">
           <div class="pf-name">🔵 Steam <span class="platform-badge badge-steam">STEAM</span></div>
-          <div class="pf-games">饥荒 · APEX · 星露谷物语</div>
+          <div class="pf-games" data-i18n="games-steam">Don't Starve · APEX · Stardew Valley</div>
         </div>
         <div class="platform-card">
           <div class="pf-name">🟠 WeGame <span class="platform-badge badge-wegame">WEGAME</span></div>
-          <div class="pf-games">云顶之弈 · LOL · 三角洲行动 · 无畏契约</div>
+          <div class="pf-games" data-i18n="games-wegame">TFT · League of Legends · Delta Force · VALORANT</div>
         </div>
         <div class="platform-card">
-          <div class="pf-name">🔷 暴雪战网 <span class="platform-badge badge-blizzard">BATTLE.NET</span></div>
-          <div class="pf-games">守望先锋 · 炉石传说</div>
+          <div class="pf-name">🔷 Battle.net <span class="platform-badge badge-blizzard">BATTLE.NET</span></div>
+          <div class="pf-games" data-i18n="games-bnet">Overwatch · Hearthstone</div>
         </div>
       </div>
     </div>
@@ -480,15 +500,15 @@
     <div class="hobby-category reveal reveal-delay-3">
       <div class="cat-header">
         <span class="cat-icon">🎉</span>
-        <span class="cat-title">线下活动</span>
+        <span class="cat-title" data-i18n="hobbies-offline">Offline Fun</span>
       </div>
       <div class="offline-tags">
-        <span class="offline-tag">🎤 KTV</span>
-        <span class="offline-tag">🀄 麻将</span>
-        <span class="offline-tag">🎲 桌游</span>
-        <span class="offline-tag">🏙️ City Walk</span>
-        <span class="offline-tag">🎪 轰趴</span>
-        <span class="offline-tag">🍲 美食探店</span>
+        <span class="offline-tag" data-i18n="tag-ktv">🎤 KTV</span>
+        <span class="offline-tag" data-i18n="tag-mahjong">🀄 Mahjong</span>
+        <span class="offline-tag" data-i18n="tag-boardgame">🎲 Board Games</span>
+        <span class="offline-tag" data-i18n="tag-citywalk">🏙️ City Walk</span>
+        <span class="offline-tag" data-i18n="tag-party">🎪 House Party</span>
+        <span class="offline-tag" data-i18n="tag-food">🍲 Food Hunt</span>
       </div>
     </div>
   </div>
@@ -496,8 +516,8 @@
 
 <!-- Gallery -->
 <section id="gallery" class="gallery-section">
-  <p class="section-label reveal">03 / Gallery</p>
-  <h2 class="section-title reveal reveal-delay-1">生活<span class="hl">相册</span></h2>
+  <p class="section-label reveal" data-i18n="gallery-label">03 / Gallery</p>
+  <h2 class="section-title reveal reveal-delay-1"><span data-i18n="gallery-title">Photo</span> <span class="hl" data-i18n="gallery-title-hl">Gallery</span></h2>
   <div class="gallery-wrapper reveal reveal-delay-2">
     <div class="gallery-track" id="galleryTrack">
       <div class="gallery-item"><img src="gallery/photo-01.jpg" alt="photo"></div>
@@ -512,40 +532,220 @@
     </div>
   </div>
   <div class="gallery-nav reveal reveal-delay-3">
-    <button id="galleryPrev" aria-label="上一张">←</button>
-    <button id="galleryNext" aria-label="下一张">→</button>
+    <button id="galleryPrev" aria-label="Previous">←</button>
+    <button id="galleryNext" aria-label="Next">→</button>
   </div>
 </section>
 
 <!-- Contact -->
 <section id="contact">
-  <p class="section-label reveal">04 / Contact</p>
-  <h2 class="section-title reveal reveal-delay-1">联系<span class="hl">我</span></h2>
+  <p class="section-label reveal" data-i18n="contact-label">04 / Contact</p>
+  <h2 class="section-title reveal reveal-delay-1"><span data-i18n="contact-title">Contact</span> <span class="hl" data-i18n="contact-title-hl">Me</span></h2>
   <div class="contact-wrapper">
     <div class="contact-info reveal reveal-delay-2">
-      <h3>来交个朋友吧 👋</h3>
-      <p>无论是约游戏开黑、线下桌游局，还是单纯想聊聊天，都欢迎来戳我！</p>
+      <h3 data-i18n="contact-heading">Let's be friends!</h3>
+      <p data-i18n="contact-desc">Whether it's gaming together, a board game night, or just a chat — hit me up anytime!</p>
       <div class="contact-links">
-        <a href="#" class="contact-link"><span class="icon-circle">💬</span> 微信：hty_1581807173</a>
+        <a href="#" class="contact-link"><span class="icon-circle">💬</span> <span data-i18n="contact-wechat">WeChat: hty_1581807173</span></a>
         <a href="mailto:haotianyu.zlt@gmail.com" class="contact-link"><span class="icon-circle">📧</span> haotianyu.zlt@gmail.com</a>
-        <a href="#" class="contact-link"><span class="icon-circle">📞</span> 电话：137773802767</a>
+        <a href="#" class="contact-link"><span class="icon-circle">📞</span> <span data-i18n="contact-phone">Phone: 137773802767</span></a>
       </div>
     </div>
     <form class="contact-form reveal reveal-delay-3" id="contactForm">
-      <div class="input-group"><input type="text" placeholder="你的名字" required></div>
-      <div class="input-group"><input type="email" placeholder="你的邮箱" required></div>
-      <div class="input-group"><textarea placeholder="说点什么吧..." required></textarea></div>
-      <button type="submit" class="submit-btn" id="submitBtn">📨 发送消息</button>
+      <div class="input-group"><input type="text" data-i18n-placeholder="form-name" placeholder="Your Name" required></div>
+      <div class="input-group"><input type="email" data-i18n-placeholder="form-email" placeholder="Your Email" required></div>
+      <div class="input-group"><textarea data-i18n-placeholder="form-message" placeholder="Say something..." required></textarea></div>
+      <button type="submit" class="submit-btn" id="submitBtn" data-i18n="form-submit">Send Message</button>
     </form>
   </div>
 </section>
 
 <footer>
-  <p>© 2026 皓天宇 — Made with <span class="heart">❤</span> and lots of games</p>
+  <p data-i18n="footer">© 2026 Haotianyu — Made with <span class="heart">❤</span> and lots of games</p>
 </footer>
 
 <script>
-// ── Custom cursor ──
+// ══════════════════════════════════════════
+//  i18n — Language Switcher
+// ══════════════════════════════════════════
+
+const translations = {
+  en: {
+    'site-title': 'Haotianyu — Personal Site',
+    'nav-about': 'About',
+    'nav-hobbies': 'Hobbies',
+    'nav-gallery': 'Gallery',
+    'nav-contact': 'Contact',
+    'hero-greeting': "👋 Hey there, I'm",
+    'hero-desc': "Scorpio guy born in '02, based in Hangzhou. Med school grad who turned life into an open-world RPG — courier, delivery, sales, insurance, ops, implementation engineer... every gig was a side quest.",
+    'hero-cta1': '🎮 My Hobbies',
+    'hero-cta2': '💬 Say Hello',
+    'about-label': '01 / About',
+    'about-title': 'About',
+    'about-title-hl': 'Me',
+    'about-intro': "I'm <strong>郑凌涛</strong>, aka <strong>皓天宇</strong>, a Scorpio based in <strong>Hangzhou, Zhejiang</strong>.",
+    'info-edu-label': 'Education',
+    'info-edu-detail': 'Medical Info Engineering · 2021-2025',
+    'info-city-label': 'City',
+    'info-city-value': 'Hangzhou, Zhejiang',
+    'info-zodiac-label': 'Zodiac',
+    'info-zodiac-value': 'Scorpio ♏',
+    'info-status-label': 'Status',
+    'info-status-value': 'Exploring life',
+    'hobbies-label': '02 / Hobbies',
+    'hobbies-title': 'My',
+    'hobbies-title-hl': 'Hobbies',
+    'hobbies-online': 'Online Games',
+    'hobbies-offline': 'Offline Fun',
+    'games-steam': "Don't Starve · APEX · Stardew Valley",
+    'games-wegame': 'TFT · League of Legends · Delta Force · VALORANT',
+    'games-bnet': 'Overwatch · Hearthstone',
+    'tag-ktv': '🎤 KTV',
+    'tag-mahjong': '🀄 Mahjong',
+    'tag-boardgame': '🎲 Board Games',
+    'tag-citywalk': '🏙️ City Walk',
+    'tag-party': '🎪 House Party',
+    'tag-food': '🍲 Food Hunt',
+    'gallery-label': '03 / Gallery',
+    'gallery-title': 'Photo',
+    'gallery-title-hl': 'Gallery',
+    'contact-label': '04 / Contact',
+    'contact-title': 'Contact',
+    'contact-title-hl': 'Me',
+    'contact-heading': "Let's be friends! 👋",
+    'contact-desc': "Whether it's gaming together, a board game night, or just a chat — hit me up anytime!",
+    'contact-wechat': 'WeChat: hty_1581807173',
+    'contact-phone': 'Phone: 137773802767',
+    'form-name': 'Your Name',
+    'form-email': 'Your Email',
+    'form-message': 'Say something...',
+    'form-submit': '📨 Send Message',
+    'footer': '© 2026 Haotianyu — Made with <span class="heart">❤</span> and lots of games',
+  },
+  zh: {
+    'site-title': '皓天宇 — 个人主页',
+    'nav-about': '关于',
+    'nav-hobbies': '爱好',
+    'nav-gallery': '相册',
+    'nav-contact': '联系',
+    'hero-greeting': '👋 你好，我是',
+    'hero-desc': '02年天蝎座男生，坐标杭州。医学信息工程毕业，gap期把生活玩成了RPG —— 快递、外卖、销售、保险、运营、实施工程师，每个都是支线任务。',
+    'hero-cta1': '🎮 我的爱好',
+    'hero-cta2': '💬 交个朋友',
+    'about-label': '01 / 关于',
+    'about-title': '关于',
+    'about-title-hl': '我',
+    'about-intro': '我是<strong>郑凌涛</strong>，网名<strong>皓天宇</strong>，02年天蝎座，坐标<strong>浙江杭州</strong>。',
+    'info-edu-label': '教育背景',
+    'info-edu-detail': '医学信息工程 · 2021-2025',
+    'info-city-label': '所在城市',
+    'info-city-value': '浙江杭州',
+    'info-zodiac-label': '星座',
+    'info-zodiac-value': '天蝎座 ♏',
+    'info-status-label': '状态',
+    'info-status-value': '探索人生中',
+    'hobbies-label': '02 / 爱好',
+    'hobbies-title': '我的',
+    'hobbies-title-hl': '爱好',
+    'hobbies-online': '线上游戏',
+    'hobbies-offline': '线下活动',
+    'games-steam': '饥荒 · APEX · 星露谷物语',
+    'games-wegame': '云顶之弈 · LOL · 三角洲行动 · 无畏契约',
+    'games-bnet': '守望先锋 · 炉石传说',
+    'tag-ktv': '🎤 KTV',
+    'tag-mahjong': '🀄 麻将',
+    'tag-boardgame': '🎲 桌游',
+    'tag-citywalk': '🏙️ City Walk',
+    'tag-party': '🎪 轰趴',
+    'tag-food': '🍲 美食探店',
+    'gallery-label': '03 / 相册',
+    'gallery-title': '生活',
+    'gallery-title-hl': '相册',
+    'contact-label': '04 / 联系',
+    'contact-title': '联系',
+    'contact-title-hl': '我',
+    'contact-heading': '来交个朋友吧 👋',
+    'contact-desc': '无论是约游戏开黑、线下桌游局，还是单纯想聊聊天，都欢迎来戳我！',
+    'contact-wechat': '微信：hty_1581807173',
+    'contact-phone': '电话：137773802767',
+    'form-name': '你的名字',
+    'form-email': '你的邮箱',
+    'form-message': '说点什么吧...',
+    'form-submit': '📨 发送消息',
+    'footer': '© 2026 皓天宇 — Made with <span class="heart">❤</span> and lots of games',
+  }
+};
+
+// Typewriter role arrays per language
+const typewriterRoles = {
+  en: ['Scorpio Guy', 'Gamer at Heart', 'Gap Year Explorer', 'Class Prez & Troublemaker'],
+  zh: ['天蝎座男生', '游戏爱好者', 'gap期探索者', '前班长 · 同学的小混蛋']
+};
+
+// Form submit button state messages
+const submitMessages = {
+  en: { sent: '✅ Sent!', normal: '📨 Send Message' },
+  zh: { sent: '✅ 发送成功！', normal: '📨 发送消息' }
+};
+
+let currentLang = localStorage.getItem('lang') || 'en';
+
+function applyTranslations(lang) {
+  document.documentElement.lang = lang;
+
+  // Text content via data-i18n
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (translations[lang] && translations[lang][key]) {
+      // For keys that contain HTML (like about-intro, footer), use innerHTML
+      if (key === 'about-intro' || key === 'footer') {
+        el.innerHTML = translations[lang][key];
+      } else {
+        el.textContent = translations[lang][key];
+      }
+    }
+  });
+
+  // Placeholders
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+    const key = el.getAttribute('data-i18n-placeholder');
+    if (translations[lang] && translations[lang][key]) {
+      el.placeholder = translations[lang][key];
+    }
+  });
+
+  // Update lang toggle buttons
+  document.querySelectorAll('.lang-option').forEach(opt => {
+    opt.classList.toggle('active', opt.getAttribute('data-lang') === lang);
+  });
+
+  // Restart typewriter with new language
+  restartTypewriter(lang);
+}
+
+// ══════════════════════════════════════════
+//  Language toggle click handler
+// ══════════════════════════════════════════
+
+document.getElementById('langToggle').addEventListener('click', function(e) {
+  const option = e.target.closest('.lang-option');
+  if (!option) return;
+  const lang = option.getAttribute('data-lang');
+  if (lang === currentLang) return;
+  currentLang = lang;
+  localStorage.setItem('lang', lang);
+  applyTranslations(lang);
+  // Reset submit button text
+  const btn = document.getElementById('submitBtn');
+  if (!btn.classList.contains('sent')) {
+    btn.textContent = submitMessages[lang].normal;
+  }
+});
+
+// ══════════════════════════════════════════
+//  Custom cursor
+// ══════════════════════════════════════════
+
 const cursor = document.querySelector('.cursor');
 const cursorDot = document.querySelector('.cursor-dot');
 let mouseX = 0, mouseY = 0;
@@ -567,19 +767,22 @@ function animateCursor() {
 }
 animateCursor();
 
-// Cursor hover effect on interactive elements
-const hoverTargets = document.querySelectorAll('a, button, .offline-tag, .platform-card, input, textarea, .gallery-item');
+const hoverTargets = document.querySelectorAll('a, button, .offline-tag, .platform-card, input, textarea, .gallery-item, .lang-option');
 hoverTargets.forEach(el => {
   el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
   el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
 });
 
-// ── Typewriter ──
-const roles = ['天蝎座男生', '游戏爱好者', 'gap期探索者', '前班长 · 同学的小混蛋'];
+// ══════════════════════════════════════════
+//  Typewriter
+// ══════════════════════════════════════════
+
 let roleIdx = 0, charIdx = 0, isDeleting = false;
+let typewriterTimeout;
 const typewriterEl = document.getElementById('typewriter');
 
 function typeLoop() {
+  const roles = typewriterRoles[currentLang];
   const current = roles[roleIdx];
   if (isDeleting) {
     typewriterEl.textContent = current.substring(0, charIdx - 1);
@@ -598,11 +801,22 @@ function typeLoop() {
     roleIdx = (roleIdx + 1) % roles.length;
     speed = 400;
   }
-  setTimeout(typeLoop, speed);
+  typewriterTimeout = setTimeout(typeLoop, speed);
 }
-typeLoop();
 
-// ── Scroll reveal ──
+function restartTypewriter(lang) {
+  clearTimeout(typewriterTimeout);
+  roleIdx = 0;
+  charIdx = 0;
+  isDeleting = false;
+  typewriterEl.textContent = '';
+  typeLoop();
+}
+
+// ══════════════════════════════════════════
+//  Scroll reveal
+// ══════════════════════════════════════════
+
 const revealEls = document.querySelectorAll('.reveal');
 const observer = new IntersectionObserver(entries => {
   entries.forEach(entry => {
@@ -614,20 +828,26 @@ const observer = new IntersectionObserver(entries => {
 
 revealEls.forEach(el => observer.observe(el));
 
-// ── Contact form ──
+// ══════════════════════════════════════════
+//  Contact form
+// ══════════════════════════════════════════
+
 document.getElementById('contactForm').addEventListener('submit', function(e) {
   e.preventDefault();
   const btn = document.getElementById('submitBtn');
-  btn.textContent = '✅ 发送成功！';
+  btn.textContent = submitMessages[currentLang].sent;
   btn.classList.add('sent');
   setTimeout(() => {
-    btn.textContent = '📨 发送消息';
+    btn.textContent = submitMessages[currentLang].normal;
     btn.classList.remove('sent');
     this.reset();
   }, 3000);
 });
 
-// ── Parallax on hero visual ──
+// ══════════════════════════════════════════
+//  Parallax on hero visual
+// ══════════════════════════════════════════
+
 const heroVisual = document.querySelector('.hero-visual');
 document.addEventListener('mousemove', e => {
   if (window.innerWidth <= 768) return;
@@ -636,7 +856,10 @@ document.addEventListener('mousemove', e => {
   if (heroVisual) heroVisual.style.transform = `translateY(-50%) translate(${x}px, ${y}px)`;
 });
 
-// ── Gallery drag-to-scroll ──
+// ══════════════════════════════════════════
+//  Gallery drag-to-scroll
+// ══════════════════════════════════════════
+
 const track = document.getElementById('galleryTrack');
 let isDown = false, startX, scrollLeft;
 
@@ -654,13 +877,19 @@ track.addEventListener('mousemove', e => {
   track.scrollLeft = scrollLeft - (x - startX) * 1.5;
 });
 
-// ── Gallery nav buttons ──
 document.getElementById('galleryPrev').addEventListener('click', () => {
   track.scrollBy({ left: -320, behavior: 'smooth' });
 });
 document.getElementById('galleryNext').addEventListener('click', () => {
   track.scrollBy({ left: 320, behavior: 'smooth' });
 });
+
+// ══════════════════════════════════════════
+//  Init — apply saved language & start typewriter
+// ══════════════════════════════════════════
+
+applyTranslations(currentLang);
+typeLoop();
 </script>
 
 </body>
