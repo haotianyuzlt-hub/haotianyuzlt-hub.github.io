@@ -4,6 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title data-i18n="site-title">Haotianyu — Personal Site</title>
+<meta name="description" content="皓天宇的个人主页 - 02年天蝎座男生，坐标杭州。游戏爱好、生活相册、交个朋友。">
+<meta property="og:title" content="皓天宇 — Personal Site">
+<meta property="og:description" content="皓天宇的个人主页 - 02年天蝎座男生，坐标杭州。">
+<meta property="og:image" content="avatar.jpg">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌙</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@300;400;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -88,6 +95,60 @@
   .nav-links { display: flex; gap: 2rem; list-style: none; }
   .nav-links a { color: var(--text-muted); text-decoration: none; font-weight: 600; font-size: 0.9rem; transition: color 0.3s; letter-spacing: 0.5px; }
   .nav-links a:hover { color: var(--coral); }
+
+  /* ── Hamburger menu button ── */
+  .hamburger {
+    display: none; flex-direction: column; gap: 5px; background: none; border: none;
+    cursor: none; padding: 8px; z-index: 101;
+  }
+  .hamburger span {
+    display: block; width: 24px; height: 2px; background: var(--text);
+    border-radius: 2px; transition: all 0.3s;
+  }
+  .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+  .hamburger.open span:nth-child(2) { opacity: 0; }
+  .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+  /* ── Back to top button ── */
+  .back-to-top {
+    position: fixed; bottom: 30px; right: 30px; z-index: 99;
+    width: 48px; height: 48px; border-radius: 50%;
+    background: var(--coral); color: #fff; border: none;
+    font-size: 1.3rem; cursor: none;
+    opacity: 0; transform: translateY(20px); pointer-events: none;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 4px 20px var(--coral-glow);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .back-to-top.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+  .back-to-top:hover { transform: translateY(-4px) scale(1.1); box-shadow: 0 8px 30px var(--coral-glow); }
+
+  /* ── Lightbox ── */
+  .lightbox {
+    position: fixed; inset: 0; z-index: 1000; background: rgba(0,0,0,0.92);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none; transition: opacity 0.3s;
+  }
+  .lightbox.open { opacity: 1; pointer-events: auto; }
+  .lightbox img { max-width: 90vw; max-height: 85vh; border-radius: 12px; object-fit: contain; }
+  .lightbox-close {
+    position: absolute; top: 20px; right: 30px;
+    background: none; border: none; color: #fff; font-size: 2.5rem;
+    cursor: none; z-index: 1001; line-height: 1;
+  }
+  .lightbox-close:hover { color: var(--coral); }
+
+  /* ── Copy hint ── */
+  .copy-target { cursor: none; transition: color 0.3s; }
+  .copy-target:hover { color: var(--cyan); }
+  .copy-toast {
+    position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+    background: var(--cyan); color: var(--bg); padding: 0.6rem 1.5rem;
+    border-radius: 50px; font-family: var(--font-display); font-size: 0.9rem;
+    z-index: 999; opacity: 0; transition: opacity 0.3s;
+    pointer-events: none;
+  }
+  .copy-toast.show { opacity: 1; }
 
   /* ── Language switcher ── */
   .lang-toggle {
@@ -341,12 +402,22 @@
   @media (max-width: 768px) {
     .hero-visual { display: none; }
     .about-grid, .hobbies-grid, .contact-wrapper { grid-template-columns: 1fr; }
-    .nav-links { display: none; }
+    .hamburger { display: flex; }
+    .nav-links {
+      display: flex; flex-direction: column; gap: 1rem;
+      position: fixed; top: 0; right: -100%; width: 70%; height: 100vh;
+      background: rgba(13,13,26,0.97); backdrop-filter: blur(20px);
+      padding: 5rem 2rem; transition: right 0.35s ease;
+      border-left: 1px solid var(--border);
+    }
+    .nav-links.open { right: 0; }
+    .nav-links a { font-size: 1.1rem; }
     .section-title { font-size: 2rem; }
     .hero-name { font-size: 2.8rem; }
-    .cursor, .cursor-dot { display: none; }
+    .cursor, .cursor-dot { display: none !important; }
     body { cursor: auto; }
     .gallery-item img { width: 220px; height: 300px; }
+    .back-to-top { bottom: 20px; right: 20px; width: 42px; height: 42px; font-size: 1.1rem; }
   }
 
   @media (max-width: 480px) {
@@ -377,12 +448,15 @@
       <span class="lang-option" data-lang="zh">中文</span>
     </div>
   </div>
-  <ul class="nav-links">
+  <ul class="nav-links" id="navLinks">
     <li><a href="#about" data-i18n="nav-about">About</a></li>
     <li><a href="#hobbies" data-i18n="nav-hobbies">Hobbies</a></li>
     <li><a href="#gallery" data-i18n="nav-gallery">Gallery</a></li>
     <li><a href="#contact" data-i18n="nav-contact">Contact</a></li>
   </ul>
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
 
 <!-- Hero -->
@@ -520,15 +594,15 @@
   <h2 class="section-title reveal reveal-delay-1"><span data-i18n="gallery-title">Photo</span> <span class="hl" data-i18n="gallery-title-hl">Gallery</span></h2>
   <div class="gallery-wrapper reveal reveal-delay-2">
     <div class="gallery-track" id="galleryTrack">
-      <div class="gallery-item"><img src="gallery/photo-01.jpg" alt="photo"></div>
-      <div class="gallery-item"><img src="gallery/photo-02.jpg" alt="photo"></div>
-      <div class="gallery-item"><img src="gallery/photo-03.jpg" alt="photo"></div>
-      <div class="gallery-item"><img src="gallery/photo-04.jpg" alt="photo"></div>
-      <div class="gallery-item"><img src="gallery/photo-05.jpg" alt="photo"></div>
-      <div class="gallery-item"><img src="gallery/photo-06.jpg" alt="photo"></div>
-      <div class="gallery-item"><img src="gallery/photo-07.jpg" alt="photo"></div>
-      <div class="gallery-item"><img src="gallery/photo-08.jpg" alt="photo"></div>
-      <div class="gallery-item"><img src="gallery/photo-09.jpg" alt="photo"></div>
+      <div class="gallery-item"><img src="gallery/photo-01.jpg" alt="Photo 1" loading="lazy"></div>
+      <div class="gallery-item"><img src="gallery/photo-02.jpg" alt="Photo 2" loading="lazy"></div>
+      <div class="gallery-item"><img src="gallery/photo-03.jpg" alt="Photo 3" loading="lazy"></div>
+      <div class="gallery-item"><img src="gallery/photo-04.jpg" alt="Photo 4" loading="lazy"></div>
+      <div class="gallery-item"><img src="gallery/photo-05.jpg" alt="Photo 5" loading="lazy"></div>
+      <div class="gallery-item"><img src="gallery/photo-06.jpg" alt="Photo 6" loading="lazy"></div>
+      <div class="gallery-item"><img src="gallery/photo-07.jpg" alt="Photo 7" loading="lazy"></div>
+      <div class="gallery-item"><img src="gallery/photo-08.jpg" alt="Photo 8" loading="lazy"></div>
+      <div class="gallery-item"><img src="gallery/photo-09.jpg" alt="Photo 9" loading="lazy"></div>
     </div>
   </div>
   <div class="gallery-nav reveal reveal-delay-3">
@@ -536,6 +610,12 @@
     <button id="galleryNext" aria-label="Next">→</button>
   </div>
 </section>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" id="lightboxClose">&times;</button>
+  <img src="" alt="" id="lightboxImg">
+</div>
 
 <!-- Contact -->
 <section id="contact">
@@ -546,9 +626,9 @@
       <h3 data-i18n="contact-heading">Let's be friends!</h3>
       <p data-i18n="contact-desc">Whether it's gaming together, a board game night, or just a chat — hit me up anytime!</p>
       <div class="contact-links">
-        <a href="#" class="contact-link"><span class="icon-circle">💬</span> <span data-i18n="contact-wechat">WeChat: hty_1581807173</span></a>
+        <a href="#" class="contact-link"><span class="icon-circle">💬</span> <span class="copy-target" data-i18n="contact-wechat" data-copy="hty_1581807173">WeChat: hty_1581807173</span></a>
         <a href="mailto:haotianyu.zlt@gmail.com" class="contact-link"><span class="icon-circle">📧</span> haotianyu.zlt@gmail.com</a>
-        <a href="#" class="contact-link"><span class="icon-circle">📞</span> <span data-i18n="contact-phone">Phone: 137773802767</span></a>
+        <a href="#" class="contact-link"><span class="icon-circle">📞</span> <span class="copy-target" data-i18n="contact-phone" data-copy="13777380276">Phone: 13777380276</span></a>
       </div>
     </div>
     <form class="contact-form reveal reveal-delay-3" id="contactForm">
@@ -563,6 +643,12 @@
 <footer>
   <p data-i18n="footer">© 2026 Haotianyu — Made with <span class="heart">❤</span> and lots of games</p>
 </footer>
+
+<!-- Back to top -->
+<button class="back-to-top" id="backToTop" aria-label="Back to top" title="Back to top">↑</button>
+
+<!-- Copy toast -->
+<div class="copy-toast" id="copyToast" data-i18n="copy-toast">Copied!</div>
 
 <script>
 // ══════════════════════════════════════════
@@ -615,12 +701,13 @@ const translations = {
     'contact-heading': "Let's be friends! 👋",
     'contact-desc': "Whether it's gaming together, a board game night, or just a chat — hit me up anytime!",
     'contact-wechat': 'WeChat: hty_1581807173',
-    'contact-phone': 'Phone: 137773802767',
+    'contact-phone': 'Phone: 13777380276',
     'form-name': 'Your Name',
     'form-email': 'Your Email',
     'form-message': 'Say something...',
     'form-submit': '📨 Send Message',
     'footer': '© 2026 Haotianyu — Made with <span class="heart">❤</span> and lots of games',
+    'copy-toast': 'Copied! 📋',
   },
   zh: {
     'site-title': '皓天宇 — 个人主页',
@@ -667,12 +754,13 @@ const translations = {
     'contact-heading': '来交个朋友吧 👋',
     'contact-desc': '无论是约游戏开黑、线下桌游局，还是单纯想聊聊天，都欢迎来戳我！',
     'contact-wechat': '微信：hty_1581807173',
-    'contact-phone': '电话：137773802767',
+    'contact-phone': '电话：13777380276',
     'form-name': '你的名字',
     'form-email': '你的邮箱',
     'form-message': '说点什么吧...',
     'form-submit': '📨 发送消息',
     'footer': '© 2026 皓天宇 — Made with <span class="heart">❤</span> and lots of games',
+    'copy-toast': '已复制！📋',
   }
 };
 
@@ -743,7 +831,26 @@ document.getElementById('langToggle').addEventListener('click', function(e) {
 });
 
 // ══════════════════════════════════════════
-//  Custom cursor
+//  Hamburger menu toggle
+// ══════════════════════════════════════════
+
+const hamburger = document.getElementById('hamburger');
+const navLinks = document.getElementById('navLinks');
+
+hamburger.addEventListener('click', () => {
+  hamburger.classList.toggle('open');
+  navLinks.classList.toggle('open');
+});
+
+navLinks.querySelectorAll('a').forEach(link => {
+  link.addEventListener('click', () => {
+    hamburger.classList.remove('open');
+    navLinks.classList.remove('open');
+  });
+});
+
+// ══════════════════════════════════════════
+//  Custom cursor (skip on mobile)
 // ══════════════════════════════════════════
 
 const cursor = document.querySelector('.cursor');
@@ -758,14 +865,18 @@ document.addEventListener('mousemove', e => {
   cursorDot.style.top = mouseY + 'px';
 });
 
+let cursorAnimId;
+const isMobile = () => window.innerWidth <= 768;
+
 function animateCursor() {
+  if (isMobile()) { cursorAnimId = null; return; }
   cursorX += (mouseX - cursorX) * 0.15;
   cursorY += (mouseY - cursorY) * 0.15;
   cursor.style.left = cursorX + 'px';
   cursor.style.top = cursorY + 'px';
-  requestAnimationFrame(animateCursor);
+  cursorAnimId = requestAnimationFrame(animateCursor);
 }
-animateCursor();
+if (!isMobile()) animateCursor();
 
 const hoverTargets = document.querySelectorAll('a, button, .offline-tag, .platform-card, input, textarea, .gallery-item, .lang-option');
 hoverTargets.forEach(el => {
@@ -882,6 +993,67 @@ document.getElementById('galleryPrev').addEventListener('click', () => {
 });
 document.getElementById('galleryNext').addEventListener('click', () => {
   track.scrollBy({ left: 320, behavior: 'smooth' });
+});
+
+// ══════════════════════════════════════════
+//  Back to top button
+// ══════════════════════════════════════════
+
+const backToTop = document.getElementById('backToTop');
+window.addEventListener('scroll', () => {
+  backToTop.classList.toggle('visible', window.scrollY > 600);
+});
+backToTop.addEventListener('click', () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+// ══════════════════════════════════════════
+//  Lightbox
+// ══════════════════════════════════════════
+
+const lightbox = document.getElementById('lightbox');
+const lightboxImg = document.getElementById('lightboxImg');
+const lightboxClose = document.getElementById('lightboxClose');
+
+document.querySelectorAll('.gallery-item img').forEach(img => {
+  img.style.cursor = 'pointer';
+  img.addEventListener('click', () => {
+    lightboxImg.src = img.src;
+    lightboxImg.alt = img.alt;
+    lightbox.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  });
+});
+
+lightboxClose.addEventListener('click', closeLightbox);
+lightbox.addEventListener('click', e => {
+  if (e.target === lightbox) closeLightbox();
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && lightbox.classList.contains('open')) closeLightbox();
+});
+
+function closeLightbox() {
+  lightbox.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// ══════════════════════════════════════════
+//  Copy to clipboard
+// ══════════════════════════════════════════
+
+const copyToast = document.getElementById('copyToast');
+document.querySelectorAll('.copy-target').forEach(el => {
+  el.addEventListener('click', (e) => {
+    e.preventDefault();
+    const text = el.getAttribute('data-copy');
+    if (!text) return;
+    navigator.clipboard.writeText(text).then(() => {
+      copyToast.textContent = translations[currentLang]?.['copy-toast'] || 'Copied! 📋';
+      copyToast.classList.add('show');
+      setTimeout(() => copyToast.classList.remove('show'), 1800);
+    }).catch(() => {});
+  });
 });
 
 // ══════════════════════════════════════════
